@@ -38,7 +38,6 @@ class GenerateMenus
     {
         \Menu::make('admin_sidebar', function ($menu) {
 
-            // Articles Dropdown
             $articles_menu = $menu->add('<i class="c-sidebar-nav-icon fas fa-envelope"></i> Email Marketing', [
                 'class' => 'c-sidebar-nav-dropdown',
             ])
@@ -75,7 +74,6 @@ class GenerateMenus
             ->data([
                 'order'         => 88,
                 'activematches' => [
-                    /*'admin/lists*',*/
                     'admin/templates*',
                 ],
                 'permission'    => ['edit_posts'],

@@ -9,6 +9,7 @@ class MailList extends BaseModel
 {
 
     protected $table = 'mkt_mail_lists';
+
     // Subscribers to import every time
     const IMPORT_STATUS_NEW = 'new';
     const IMPORT_STATUS_RUNNING = 'running';
@@ -69,7 +70,7 @@ class MailList extends BaseModel
 
     public function customer()
     {
-        return $this->belongsTo('Modules\Inboxer\Entities\Customer');
+        return $this->belongsTo('App\Models\User', 'customer_id', 'id');
     }
 
     public function segments()
@@ -94,7 +95,6 @@ class MailList extends BaseModel
 
     public function subscribers()
     {
-        // return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
         return $this->hasMany('Modules\Inboxer\Entities\Subscriber', 'mail_list_id', 'id');
     }
 
@@ -126,7 +126,6 @@ class MailList extends BaseModel
                 $uid = uniqid();
             }
             $item->uid = $uid;
-
 
             /** @var @todo Replace this relationship customer_id */
             $item->customer_id = \Auth::user()->id;
@@ -321,7 +320,7 @@ class MailList extends BaseModel
      *
      * @return bool
      */
-    public function checkExsitEmail($email)
+    public function checkExistsEmail($email)
     {
         $valid = !filter_var($email, FILTER_VALIDATE_EMAIL) === false &&
             !empty($email) &&

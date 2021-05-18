@@ -98,14 +98,6 @@ class SubscriberController extends Controller
 
     public function index_data($uid)
     {
-        $module_title = $this->module_title;
-        $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'List';
         $list = MailList::findByUid($uid);
         $subscribers = Subscriber::select('id', 'uid', 'email', 'status', 'created_at', 'updated_at', 'subscription_type')->where('id', $list->id);
 
@@ -123,7 +115,7 @@ class SubscriberController extends Controller
                             return $data->name.' '.$data->status_formatted.' '.$is_featured;
                         })
                         ->editColumn('updated_at', function ($data) {
-                            $module_name = $this->module_name;
+                            // $module_name = $this->module_name;
 
                             $diff = Carbon::now()->diffInHours($data->updated_at);
 
@@ -145,14 +137,8 @@ class SubscriberController extends Controller
      */
     public function index_list(Request $request)
     {
-        $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'List';
 
         $term = trim($request->q);
 
@@ -185,9 +171,7 @@ class SubscriberController extends Controller
 
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
         $module_action = 'Create';
@@ -225,16 +209,6 @@ class SubscriberController extends Controller
      */
     public function store(Request $request)
     {
-        $module_title = $this->module_title;
-        $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'Store';
-
-        $customer = $request->user()->customer;
         $list = MailList::findByUid($request->list_uid);
         $subscriber = new Subscriber();
         $subscriber->mail_list_id = $list->id;
@@ -258,7 +232,7 @@ class SubscriberController extends Controller
             // $subscriber->log('created', $customer);
 
             // Redirect to my lists page
-            Flash::success("<i class='fas fa-check'></i> ".trans('marketing::messages.subscriber.created'))->important();
+            Flash::success("<i class='fas fa-check'></i> ".trans('inboxer::messages.subscriber.created'))->important();
 
             return redirect()->action('\Modules\Inboxer\Http\Controllers\Backend\SubscriberController@index', $list->uid);
         }
@@ -276,7 +250,6 @@ class SubscriberController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -292,12 +265,6 @@ class SubscriberController extends Controller
                                 ->paginate();
 
         Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
-
-        if( \Module::has('Comment'))
-            $comment_active = true;
-        if( \Module::has('Tag'))
-            $comment_active = true;
-
 
         return view(
             "inboxer::backend.$module_name.show",
@@ -316,7 +283,6 @@ class SubscriberController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -324,7 +290,6 @@ class SubscriberController extends Controller
         $module_action = 'Edit';
 
         $$module_name_singular = $module_model::findOrFail($id);
-
 
         // Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
@@ -346,8 +311,6 @@ class SubscriberController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -376,8 +339,6 @@ class SubscriberController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -404,7 +365,6 @@ class SubscriberController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -431,10 +391,7 @@ class SubscriberController extends Controller
      */
     public function restore($id)
     {
-        $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -456,7 +413,7 @@ class SubscriberController extends Controller
      */
     public function search($list, $request)
     {
-        $subscribers = \Modules\Inboxer\Entities\Subscriber::search($request)
+        $subscribers = Subscriber::search($request)
             ->where('mail_list_id', '=', $list->id);
 
         return $subscribers;
@@ -470,21 +427,17 @@ class SubscriberController extends Controller
      */
     public function listing(Request $request)
     {
-        $list = \Modules\Inboxer\Entities\MailList::findByUid($request->list_uid);
-
-        // authorize
-        /*if (\Gate::denies('read', $list)) {
-            return;
-        }*/
+        $list = MailList::findByUid($request->list_uid);
 
         $subscribers = $list->subscribers(); //$this->search($list, $request);
         $total = $list->subscribers()->count();
         $subscribers->with(['mailList', 'subscriberFields']);
+
         $subscribers = \optimized_paginate($subscribers, $request->per_page, null, null, null, $total);
 
         $fields = $list->getFields->whereIn('uid', explode(',', $request->columns));
 
-        return view('marketing::subscribers._list', [
+        return view('inboxer::backend.subscribers._list', [
             'subscribers' => $subscribers,
             'total' => $total,
             'list' => $list,

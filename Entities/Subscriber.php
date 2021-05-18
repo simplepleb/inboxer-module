@@ -391,7 +391,7 @@ class Subscriber extends Model
 
         // check valid file
         if (!in_array('EMAIL', $headers)) {
-            $str = "error\n<span style='color:red'>".trans('marketing::messages.invalid_csv_file').'</span>';
+            $str = "error\n<span style='color:red'>".trans('inboxer::messages.invalid_csv_file').'</span>';
             $str .= "\n0";
             $bytes_written = \File::put($directory.$list->id.'-process.log', $str);
 
@@ -404,14 +404,14 @@ class Subscriber extends Model
 
             // authorize
             /*if ($user->cannot('create', new \Modules\Inboxer\Entities\Subscriber(['mail_list_id' => $list->id]))) {
-                $str = "error\n<span style='color:red'>".trans('marketing::messages.error_add_max_quota').'</span><br />'.$content_cache;
+                $str = "error\n<span style='color:red'>".trans('inboxer::messages.error_add_max_quota').'</span><br />'.$content_cache;
                 $str .= "\n".$count;
                 $bytes_written = \File::put($directory.$list->id.'-process.log', $str);
 
                 // Action Log
                 $list->log('import_max_error', $customer, ['count' => $count]);
 
-                $error_detail = trans('marketing::messages.error_add_max_quota');
+                $error_detail = trans('inboxer::messages.error_add_max_quota');
                 $myfile = file_put_contents($directory.$list->uid.'-detail.log', $error_detail.PHP_EOL, FILE_APPEND | LOCK_EX);
 
                 return;
@@ -425,10 +425,10 @@ class Subscriber extends Model
                     $email = '';
                 }
 
-                $valid = $list->checkExsitEmail($email);
+                $valid = $list->checkExistsEmail($email);
                 if ($valid) {
                     //// save subscribers
-                    $subscriber = new \Modules\Inboxer\Entities\Subscriber();
+                    $subscriber = new Subscriber();
                     $subscriber->mail_list_id = $list->id;
                     $subscriber->email = $email;
                     $subscriber->status = 'subscribed';
@@ -440,7 +440,7 @@ class Subscriber extends Model
                             $lf = $list->fields()->where('tag', '=', $headers[$key])->first();
                             if (is_object($lf)) {
                                 //// save fields
-                                $lfv = new \Modules\Inboxer\Entities\SubscriberField(array(
+                                $lfv = new SubscriberField(array(
                                                 'field_id' => $lf->id,
                                                 'subscriber_id' => $subscriber->id,
                                                 'value' => $value,
@@ -451,13 +451,13 @@ class Subscriber extends Model
                     }
 
                     ++$success;
-                    $error_detail = trans('marketing::messages.email_imported', ['time' => \Carbon\Carbon::now()->timezone($user->customer->timezone)->format(trans('marketing::messages.datetime_format_2')), 'email' => $email]);
+                    $error_detail = trans('inboxer::messages.email_imported', ['time' => \Carbon\Carbon::now()->timezone($user->customer->timezone)->format(trans('inboxer::messages.datetime_format_2')), 'email' => $email]);
                 } else {
                     ++$error;
-                    $error_detail = trans('marketing::messages.email_existed_invalid', ['time' => \Carbon\Carbon::now()->timezone($user->customer->timezone)->format(trans('marketing::messages.datetime_format_2')), 'email' => $email]);
+                    $error_detail = trans('inboxer::messages.email_existed_invalid', ['time' => \Carbon\Carbon::now()->timezone($user->customer->timezone)->format(trans('inboxer::messages.datetime_format_2')), 'email' => $email]);
                 }
                 if ($key % $lines_per_second == 0) {
-                    $content_cache = trans('marketing::messages.import_export_statistics_line', [
+                    $content_cache = trans('inboxer::messages.import_export_statistics_line', [
                                             'total' => $total,
                                             'processed' => $success + $error,
                                             'success' => $success,
@@ -474,7 +474,7 @@ class Subscriber extends Model
             }
         }
 
-        $content_cache = trans('marketing::messages.import_export_statistics_line', [
+        $content_cache = trans('inboxer::messages.import_export_statistics_line', [
                                             'total' => $total,
                                             'processed' => $success + $error,
                                             'success' => $success,
@@ -524,7 +524,7 @@ class Subscriber extends Model
                     ++$error;
                 }
                 if ($key % $lines_per_second == 0) {
-                    $content_cache = trans('marketing::messages.import_export_statistics_line', [
+                    $content_cache = trans('inboxer::messages.import_export_statistics_line', [
                                             'total' => $total,
                                             'processed' => $success + $error,
                                             'success' => $success,
@@ -539,7 +539,7 @@ class Subscriber extends Model
 
         $str = $headers."\n".implode("\n", $data);
         $bytes_written = \File::put($directory.$list->id.'-data.csv', $str);
-        $content_cache = trans('marketing::messages.import_export_statistics_line', [
+        $content_cache = trans('inboxer::messages.import_export_statistics_line', [
                                             'total' => $total,
                                             'processed' => $success + $error,
                                             'success' => $success,
@@ -605,7 +605,7 @@ class Subscriber extends Model
             $copy->mail_list_id = $list->id;
             $copy->save();
 
-            $copy = \Modules\Inboxer\Entities\Subscriber::find($copy->id);
+            $copy = Subscriber::find($copy->id);
         } else {
             // return if keep
             if ($type == 'keep') {
@@ -734,8 +734,8 @@ class Subscriber extends Model
     public static function copyMoveExistSelectOptions()
     {
         return [
-            ['text' => trans('marketing::messages.update_if_subscriber_exists'), 'value' => 'update'],
-            ['text' => trans('marketing::messages.keep_if_subscriber_exists'), 'value' => 'keep'],
+            ['text' => trans('inboxer::messages.update_if_subscriber_exists'), 'value' => 'update'],
+            ['text' => trans('inboxer::messages.keep_if_subscriber_exists'), 'value' => 'keep'],
         ];
     }
 

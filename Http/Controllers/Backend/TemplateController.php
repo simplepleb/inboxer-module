@@ -40,8 +40,7 @@ class TemplateController extends Controller
 {
     use Authorizable;
 
-    public function __construct()
-    {
+    public function __construct() {
         // Page Title
         $this->module_title = 'Templates';
 
@@ -68,7 +67,6 @@ class TemplateController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -85,14 +83,8 @@ class TemplateController extends Controller
 
     public function index_data()
     {
-        $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'List';
 
         $$module_name = $module_model::select('id', 'uid', 'name', 'image', 'source', 'updated_at', 'customer_id');
 
@@ -116,10 +108,9 @@ class TemplateController extends Controller
                                 ';
                             }
 
-                            return $img; //$data->name.' '.$data->status_formatted.' '.$is_featured;
+                            return $img;
                         })
                         ->editColumn('updated_at', function ($data) {
-                            $module_name = $this->module_name;
 
                             $diff = Carbon::now()->diffInHours($data->updated_at);
 
@@ -142,14 +133,8 @@ class TemplateController extends Controller
      */
     public function index_list(Request $request)
     {
-        $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
-        $module_name_singular = Str::singular($module_name);
-
-        $module_action = 'List';
 
         $term = trim($request->q);
 
@@ -175,23 +160,17 @@ class TemplateController extends Controller
      * Template screenshot.
      *
      * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function image(Request $request)
     {
-        // Get current user
         $template = Template::findByUid($request->uid);
         $file_path = storage_path('/');
-        // authorize
-        /*if (!$request->user()->customer->can('image', $template)) {
-            return $this->notAuthorized();
-        }*/
 
         if (!empty($template->image) && file_exists($file_path.$template->image.'.thumb.jpg')) {
             $img = \Image::make($file_path.$template->image.'.thumb.jpg');
         } else {
-            $img = \Image::make(public_path('/assets/modules/marketing/assets/images/placeholder.jpg'));
+            $img = \Image::make(public_path('/vendor/simplepleb/images/placeholder.jpg'));
         }
 
         return $img->response();
@@ -207,11 +186,6 @@ class TemplateController extends Controller
     {
         $template = Template::findByUid($request->uid);
 
-        // authorize
-        /*if (!$request->user()->customer->can('view', $template)) {
-            return $this->notAuthorized();
-        }*/
-
         echo $template->content;
     }
 
@@ -219,17 +193,11 @@ class TemplateController extends Controller
      * Preview template.
      *
      * @param int $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function preview(Request $request, $id)
     {
         $template = Template::findByUid($id);
-
-        // authorize
-        /*if (!$request->user()->customer->can('preview', $template)) {
-            return $this->not_authorized();
-        }*/
 
         // Convert to inline css if template source is builder
         if ($template->source == 'builder') {
@@ -254,17 +222,11 @@ class TemplateController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function saveImage(Request $request, $id)
     {
         $template = Template::findByUid($id);
-
-        // authorize
-        /*if (!$request->user()->customer->can('saveImage', $template)) {
-            return $this->not_authorized();
-        }*/
 
         $upload_loca = 'email_templates/';
         $file_path = storage_path('/');
@@ -293,16 +255,13 @@ class TemplateController extends Controller
      * Upload template.
      *
      * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function upload(Request $request)
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
 
         $module_action = 'Upload';
 
@@ -326,22 +285,17 @@ class TemplateController extends Controller
      * Buiding email template.
      *
      * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function build(Request $request)
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
-
         $module_action = 'Build';
 
         $template = new Template();
         $template->name = trans('inboxer::messages.untitled_template');
-
 
         $elements = [];
         if(isset($request->style)) {
@@ -362,7 +316,6 @@ class TemplateController extends Controller
      * Select template style.
      *
      * @param \Illuminate\Http\Request $request
-     *
      * @return \Illuminate\Http\Response
      */
     public function buildSelect(Request $request)

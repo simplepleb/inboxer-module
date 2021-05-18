@@ -32,7 +32,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Log;
 
-
 use Modules\Inboxer\Http\Requests\Backend\ListsRequest;
 use Nwidart\Modules\Module;
 use Spatie\Activitylog\Models\Activity;
@@ -171,13 +170,10 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
-        $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
         $module_action = 'Create';
-
 
         Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
@@ -190,7 +186,7 @@ class MailListController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param ListsRequest $request
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -198,8 +194,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -230,7 +224,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -245,13 +238,7 @@ class MailListController extends Controller
                                 ->latest()
                                 ->paginate();
 
-        Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
-
-        if( \Module::has('Comment'))
-            $comment_active = true;
-        if( \Module::has('Tag'))
-            $comment_active = true;
-
+        // Log::info(label_case($module_title.' '.$module_action).' | User:'.Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
         return view(
             "inboxer::backend.$module_name.show",
@@ -270,7 +257,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -278,7 +264,6 @@ class MailListController extends Controller
         $module_action = 'Edit';
 
         $$module_name_singular = $module_model::findOrFail($id);
-
 
         // Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".Auth::user()->name.'(ID:'.Auth::user()->id.')');
 
@@ -300,8 +285,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -330,8 +313,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
@@ -358,7 +339,6 @@ class MailListController extends Controller
     {
         $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
         $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
@@ -385,10 +365,7 @@ class MailListController extends Controller
      */
     public function restore($id)
     {
-        $module_title = $this->module_title;
         $module_name = $this->module_name;
-        $module_path = $this->module_path;
-        $module_icon = $this->module_icon;
         $module_model = $this->module_model;
         $module_name_singular = Str::singular($module_name);
 
