@@ -1,0 +1,23 @@
+{
+    "name": "simplepleb/inboxer",
+    "description": "",
+    "authors": [
+        {
+            "name": "SimplePleb",
+            "email": "plebeian.tribune@protonmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Inboxer\\": ""
+        }
+    }
+}

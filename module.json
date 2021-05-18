@@ -1,0 +1,13 @@
+{
+    "name": "Inboxer",
+    "alias": "inboxer",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Inboxer\\Providers\\InboxerServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
