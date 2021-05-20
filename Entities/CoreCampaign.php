@@ -7,15 +7,15 @@ use App\Models\IpLocation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Marketing\Library\Log as MailLog;
-use Modules\Marketing\Library\StringHelper;
+use Modules\Inboxer\Helpers\StringHelper;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 use DB;
 use Carbon\Carbon;
 use File;
-use Modules\Marketing\Entities\SendingDomain;
-use Modules\Marketing\Entities\SendingServer;
-use Modules\Marketing\Entities\Subscriber;
-use Modules\Marketing\Entities\TrackingLog;
+use Modules\Inboxer\Entities\SendingDomain;
+use Modules\Inboxer\Entities\SendingServer;
+use Modules\Inboxer\Entities\Subscriber;
+use Modules\Inboxer\Entities\TrackingLog;
 
 abstract class CoreCampaign extends Model
 {
@@ -144,7 +144,7 @@ abstract class CoreCampaign extends Model
      */
     public function customer()
     {
-        return $this->belongsTo('Modules\Marketing\Entities\Customer');
+        return $this->belongsTo('App\Models\User', 'customer_id', 'id');
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class CoreCampaign extends Model
      */
     public function trackingLogs()
     {
-        return $this->hasMany('Modules\Marketing\Entities\TrackingLog');
+        return $this->hasMany('Modules\Inboxer\Entities\TrackingLog');
     }
 
     /**
@@ -512,7 +512,7 @@ abstract class CoreCampaign extends Model
     /**
      * Build Email Custom Headers.
      *
-     * @return Hash list of custom headers
+     * @return array list of custom headers
      */
     public function getCustomHeaders($subscriber, $server)
     {

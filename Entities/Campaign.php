@@ -6,6 +6,7 @@ namespace Modules\Inboxer\Entities;
 use App\Models\SystemJob;
 use App\Models\User;
 
+use App\Modules\Inboxer\Jobs\RunCampaignJob;
 use Modules\Marketing\Library\Log as MailLog;
 use DB;
 use Modules\Marketing\Exceptions\CampaignPausedException;
@@ -14,7 +15,6 @@ use Modules\Marketing\Exceptions\CampaignErrorException;
 class Campaign extends CoreCampaign
 {
     protected $table = 'mkt_campaigns';
-
 
     /**
      * Start the campaign.
@@ -385,7 +385,7 @@ class Campaign extends CoreCampaign
         }
 
         // Filters
-        $filters = isset($params['filters']) ? $params['filters'] : null;
+        $filters = $params['filters'] ?? null;
         if ((isset($filters) && (isset($filters['open']) || isset($filters['click']) || isset($filters['tracking_status'])))
         ) {
             $query = $query->leftJoin('mkt_tracking_logs', 'mkt_tracking_logs.subscriber_id', '=', 'mkt_subscribers.id');
@@ -487,12 +487,10 @@ class Campaign extends CoreCampaign
      */
     public function queue($trigger = null, $subscribers = null, $delay = 0)
     {
-
         $this->ready();
 
-        //dd('After Ready...');
-        $job = (new \Modules\Marketing\Jobs\RunCampaignJob($this))->delay($this->getDelayInSeconds());
-        //dd( $job );
+        $job = (new RunCampaignJob($this))->delay($this->getDelayInSeconds());
+
         dispatch($job);
     }
 
