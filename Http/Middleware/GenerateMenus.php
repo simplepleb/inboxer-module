@@ -67,6 +67,20 @@ class GenerateMenus
             ->link->attr([
                 'class' => "c-sidebar-nav-link",
             ]);
+            $articles_menu->add(' Campaigns', [
+                'route' => 'backend.campaigns.index',
+                'class' => 'c-sidebar-nav-item',
+            ])
+            ->data([
+                'order'         => 88,
+                'activematches' => [
+                    'admin/campaigns*',
+                ],
+                'permission'    => ['edit_posts'],
+            ])
+            ->link->attr([
+                'class' => "c-sidebar-nav-link",
+            ]);
             $articles_menu->add(' Templates', [
                 'route' => 'backend.templates.index',
                 'class' => 'c-sidebar-nav-item',
@@ -81,6 +95,7 @@ class GenerateMenus
             ->link->attr([
                 'class' => "c-sidebar-nav-link",
             ]);
+
 
             // Submenu: Categories
             /*$articles_menu->add('<i class="c-sidebar-nav-icon fas fa-sitemap"></i> Categories', [

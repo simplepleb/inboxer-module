@@ -2,6 +2,20 @@
 
 namespace Modules\Inboxer\Entities;
 
+/*
+ *
+php artisan module:make-migration create_mkt_mail_lists_table Inboxer |
+php artisan module:make-migration create_mkt_subscribers_table Inboxer |
+php artisan module:make-migration create_mkt_subscriber_fields_table Inboxer |
+php artisan module:make-migration create_mkt_templates_table Inboxer
+php artisan module:make-migration create_mkt_fields_table Inboxer
+php artisan module:make-migration create_mkt_field_options_table Inboxer
+php artisan module:make-migration create_mkt_campaigns_table Inboxer
+php artisan module:make-migration create_mkt_campaigns_lists_segments_table Inboxer
+php artisan module:make-migration create_mkt_campaign_links_table Inboxer
+php artisan module:make-migration create_mkt_system_jobs_table Inboxer
+
+*/
 use App\Models\BaseModel;
 use App\Models\User;
 
