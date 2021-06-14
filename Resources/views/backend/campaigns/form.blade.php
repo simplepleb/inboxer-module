@@ -42,7 +42,7 @@
     <div class="col-6">
         <div class="form-group">
             <?php
-            $field_name = 'default_subject';
+            $field_name = 'subject';
             $field_lable = __("inboxer::$module_name.$field_name");
             $field_placeholder = $field_lable;
             $required = "required";
@@ -66,8 +66,8 @@
 </div>
 
 <div class="row">
-    <div class="col">
-        <div class="form-check">
+    <div class="col-6">
+        <div class="form-check form-check-inline">
             <?php
             $checked = false;
             /*if( $field_value === '1') {
@@ -78,16 +78,17 @@
             $field_placeholder = $field_lable;
             $required = "required";
             ?>
-                {{ html()->checkbox($field_name)->class('form-check-input')->checked($checked) }}
-                {{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}
+                {{ html()->checkbox($field_name)->class('form-check-input')->attributes([ 'data-toggle="toggle" data-width="200" data-on="Track Opens" data-off="Don\'t Track Opens"  data-onstyle="success" data-offstyle="warning"'])->checked($checked) }}
+                {{--{{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}--}}
                {{-- @if($custom->field_help)--}}
-                    <small id="{{$field_name}}Help" class="form-text text-muted">{{ __("inboxer::$module_name.$field_name") }}</small>
+                    {{--<small id="{{$field_name}}Help" class="form-text text-muted">{{ __("inboxer::$module_name.$field_name") }}</small>--}}
                 {{--@endif--}}
+
         </div>
     </div>
-     <div class="col">
+     <div class="col-6">
 
-        <div class="form-group">
+        <div class="form-check form-check-inline">
             <?php
             $checked = false;
             /*if( $field_value === '1') {
@@ -98,10 +99,10 @@
             $field_placeholder = $field_lable;
             $required = "required";
             ?>
-                {{ html()->checkbox($field_name)->class('form-check-input')->checked($checked) }}
-                {{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}
+                {{ html()->checkbox($field_name)->class('form-check-input')->attributes([ 'data-toggle="toggle"  data-width="200" data-on="Track Clicks" data-off="Don\'t Track Clicks" data-onstyle="success" data-offstyle="warning"'])->checked($checked) }}
+                {{--{{ html()->label($field_lable, $field_name) }} {!! fielf_required($required) !!}--}}
                 {{--@if($custom->field_help)--}}
-                    <small id="{{$field_name}}Help" class="form-text text-muted">{{ __("inboxer::$module_name.$field_name") }}</small>
+                    {{--<small id="{{$field_name}}Help" class="form-text text-muted">{{ __("inboxer::$module_name.$field_name") }}</small>--}}
                 {{--@endif--}}
         </div>
     </div>
@@ -119,11 +120,13 @@
 @push('after-styles')
 <!-- File Manager -->
 <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
 @endpush
 
 @push ('after-scripts')
 
-
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <!-- Date Time Picker & Moment Js-->
 <script type="text/javascript">
 $(function() {

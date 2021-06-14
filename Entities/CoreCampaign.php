@@ -6,6 +6,7 @@ namespace Modules\Inboxer\Entities;
 use App\Models\IpLocation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Modules\Marketing\Library\Log as MailLog;
 use Modules\Inboxer\Helpers\StringHelper;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
@@ -696,6 +697,7 @@ abstract class CoreCampaign extends Model
                 $uid = uniqid();
             }
             $item->uid = $uid;
+            $item->customer_id = Auth::user()->id;
 
             // Update custom order
             Campaign::getAll()->increment('custom_order', 1);

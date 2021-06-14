@@ -207,7 +207,7 @@ class CampaignController extends Controller
         $$module_name_singular = $module_model::create($data);
 
         // @todo Create the Event
-        // event(new ListCreated($$module_name_singular));
+        // event(new CampaignCreated($$module_name_singular));
 
         Flash::success("<i class='fas fa-check'></i> New '".Str::singular($module_title)."' Added")->important();
 

@@ -142,7 +142,7 @@ class TemplateController extends Controller
             return response()->json([]);
         }
 
-        $query_data = $module_model::where('name', 'LIKE', "%$term%")->published()->limit(10)->get();
+        $query_data = $module_model::where('name', 'LIKE', "%$term%")->limit(10)->get();
 
         $$module_name = [];
 
